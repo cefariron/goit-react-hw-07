@@ -1,13 +1,13 @@
 import { useDispatch } from "react-redux";
-import { removeContact } from "../../redux/contactsSlice";
-import css from "../Contact/Contact.module.css";
+import { deleteContact } from "../../redux/operations";
 import { MdLocalPhone } from "react-icons/md";
 import { IoMdContact } from "react-icons/io";
+import css from "../Contact/Contact.module.css";
 
-export const Contact = ({ id, name, number }) => {
+export const Contact = ({ id, name, phone }) => {
   const dispatch = useDispatch();
 
-  const handleRemove = () => dispatch(removeContact(id));
+  const handleRemove = () => dispatch(deleteContact(id));
   return (
     <div className={css.container}>
       <div>
@@ -15,7 +15,7 @@ export const Contact = ({ id, name, number }) => {
           <IoMdContact className={css.icon} /> {name}
         </p>
         <p>
-          <MdLocalPhone className={css.icon} /> {number}
+          <MdLocalPhone className={css.icon} /> {phone}
         </p>
       </div>
       <button type="button" onClick={handleRemove}>

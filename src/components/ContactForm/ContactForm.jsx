@@ -1,6 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useDispatch } from "react-redux";
-import { addContact } from "../../redux/contactsSlice";
+import { addContact } from "../../redux/operations";
 import { useId } from "react";
 import css from "../ContactForm/ContactForm.module.css";
 import * as Yup from "yup";
@@ -10,7 +10,7 @@ const validationSchema = Yup.object().shape({
     .min(3, "Enter 3 to 50 characters")
     .max(50, "Enter 3 to 50 characters")
     .required("Field cant be empty!"),
-  number: Yup.string()
+  phone: Yup.string()
     .min(3, "Enter 3 to 15 characters")
     .max(15, "Enter 3 to 15 characters")
     .required("Field cant be empty!"),
@@ -23,7 +23,7 @@ export const ContactForm = () => {
 
   const initialValues = {
     name: "",
-    number: "",
+    phone: "",
   };
 
   const handleSubmit = (values, actions) => {
@@ -50,8 +50,8 @@ export const ContactForm = () => {
             <label className={css.label} htmlFor={numberFieldId}>
               Number
             </label>
-            <Field className={css.input} id={numberFieldId} name="number" />
-            <ErrorMessage className={css.error} name="number" as="span" />
+            <Field className={css.input} id={numberFieldId} name="phone" />
+            <ErrorMessage className={css.error} name="phone" as="span" />
           </div>
           <button className={css.btn} type="submit">
             Add contact

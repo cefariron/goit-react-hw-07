@@ -1,11 +1,11 @@
 import { useSelector } from "react-redux";
-import { getContacts, selectedSearchQuery } from "../../redux/selectors.js";
+import { selectContacts, selectSearchQuery } from "../../redux/selectors.js";
 import { Contact } from "../Contact/Contact.jsx";
 import css from "./ContactList.module.css";
 
 export const ContactList = () => {
-  const contacts = useSelector(getContacts);
-  const searchQuery = useSelector(selectedSearchQuery);
+  const contacts = useSelector(selectContacts);
+  const searchQuery = useSelector(selectSearchQuery);
 
   const visibleContacts = contacts.filter((contact) =>
     contact.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -14,10 +14,10 @@ export const ContactList = () => {
   return (
     <div className={css.container}>
       <ul className={css.list}>
-        {visibleContacts.map(({ id, name, number }) => {
+        {visibleContacts.map(({ id, name, phone }) => {
           return (
             <li className={css.item} key={id}>
-              <Contact id={id} name={name} number={number} />
+              <Contact id={id} name={name} phone={phone} />
             </li>
           );
         })}

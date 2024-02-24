@@ -1,44 +1,36 @@
-import { persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
-import { createSlice, nanoid } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import { fetchContacts, addContact, deleteContact } from "./operations";
+import { handlePending, handleRejected } from "../common/helpers";
+
 
 const contactsSlice = createSlice({
   name: "contacts",
-  initialState: { items: [] },
-  reducers: {
-    addContact: {
-      reducer(state, action) {
+  initialState: {
+    items: [],
+    loading: false,
+    error: null,
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchContacts.pending, handlePending)
+      .addCase(fetchContacts.fulfilled, (state, action) => {
+        state.items = action.payload;
+      })
+      .addCase(fetchContacts.rejected, handleRejected)
+      .addCase(addContact.pending, handlePending)
+      .addCase(addContact.fulfilled, (state, action) => {
         state.items.push(action.payload);
-      },
-      prepare(values) {
-        return {
-          payload: {
-            name: values.name,
-            number: values.number,
-            id: nanoid(3),
-          },
-        };
-      },
-    },
-    removeContact(state, action) {
-      const index = state.items.findIndex(
-        (contact) => contact.id === action.payload
-      );
-      state.items.splice(index, 1);
-    },
+      })
+      .addCase(addContact.rejected, handleRejected)
+      .addCase(deleteContact.pending, handlePending)
+      .addCase(deleteContact.fulfilled, (state, action) => {
+        const index = state.items.findIndex(
+          (contact) => contact.id === action.payload.id
+        );
+        state.items.splice(index, 1);
+      })
+      .addCase(deleteContact.rejected, handleRejected);
   },
 });
 
-export const { addContact, removeContact } = contactsSlice.actions;
-
-const persistConfig = {
-  key: "contacts",
-  storage,
-};
-
-const contactsReducer = contactsSlice.reducer;
-
-export const persistedContactsReducer = persistReducer(
-  persistConfig,
-  contactsReducer
-);
+export const contactsReducer = contactsSlice.reducer;

@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import { setSearchQuery } from "../../redux/filtersSlice";
-import { selectedSearchQuery } from "../../redux/selectors";
+import { selectSearchQuery } from "../../redux/selectors";
 import { useId } from "react";
 import css from "../SearchBox/SearchBox.module.css";
 
 export const SearchBox = () => {
   const dispatch = useDispatch();
-  const searchQuery = useSelector(selectedSearchQuery);
+  const searchQuery = useSelector(selectSearchQuery);
 
   const inputId = useId();
 
